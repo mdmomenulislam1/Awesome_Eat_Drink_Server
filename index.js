@@ -29,6 +29,11 @@ async function run() {
     await client.connect();
 
     const productCollection = client.db("productDB").collection("products");
+    
+    // const brandCollection = collection("brandData")
+
+    const db = client.db('brandName');
+    const collection = db.collection('brandData');
 
     app.post("/products", async(req, res)=>{
         const product = req.body;
@@ -36,7 +41,19 @@ async function run() {
         const result = await productCollection.insertOne(product);
         console.log(result);
         res.send(result);
+    });
+
+    app.get("/products", async(req, res)=>{
+        const result = await productCollection.find().toArray();
+        console.log(result);
+        res.send(result);
     })
+
+    app.get("/brands", async(req, res)=>{
+      const result = await collection.find().toArray();
+      console.log(result);
+      res.send(result);
+  })
 
     
     await client.db("admin").command({ ping: 1 });
@@ -51,8 +68,21 @@ run().catch(console.dir);
 
 app.get('/',(req, res) =>{
     res.send('Food Maker is running')
-})
+});
+
+// app.get('/getData', async (req, res) => {
+//   const db = client.db('productDB');
+//   const collection = db.collection('brandData');
+
+//   try {
+//       const data = await collection.find({}).toArray();
+//       res.json(data);
+//   } catch (error) {
+//       console.error('Error retrieving data from MongoDB:', error);
+//       res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// });
 
 app.listen(port, ()=>{
-    console.log(`Food server is running on pppport: ${port}`)
+    console.log(`Food server is running on port: ${port}`)
 })
