@@ -3,18 +3,13 @@ const cors = require('cors');
 const app = express();
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const port = process.env.PORT || 5000;
-
+ 
 
 app.use(cors());
 app.use(express.json());
 
-// mdmomenulislam1
-// cPcchE6Kz9Tgw7l3
-
-
 const uri = "mongodb+srv://mdmomenulislam1:cPcchE6Kz9Tgw7l3@cluster0.dzivggu.mongodb.net/?retryWrites=true&w=majority";
 
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -29,8 +24,6 @@ async function run() {
     await client.connect();
 
     const productCollection = client.db("productDB").collection("products");
-
-    // const brandCollection = collection("brandData")
 
     const db = client.db('brandName');
     const collection = db.collection('brandData');
@@ -88,7 +81,6 @@ async function run() {
       res.send(result);
     })
 
-
     app.get("/products/:id", async (req, res) => {
       const id = req.params.id;
       console.log("id", id);
@@ -114,18 +106,6 @@ app.get('/', (req, res) => {
   res.send('Food Maker is running')
 });
 
-// app.get('/getData', async (req, res) => {
-//   const db = client.db('productDB');
-//   const collection = db.collection('brandData');
-
-//   try {
-//       const data = await collection.find({}).toArray();
-//       res.json(data);
-//   } catch (error) {
-//       console.error('Error retrieving data from MongoDB:', error);
-//       res.status(500).json({ error: 'Internal Server Error' });
-//   }
-// });
 
 app.listen(port, () => {
   console.log(`Food server is running on port: ${port}`)
