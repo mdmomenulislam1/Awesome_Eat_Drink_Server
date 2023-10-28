@@ -34,6 +34,9 @@ async function run() {
 
     const db = client.db('brandName');
     const collection = db.collection('brandData');
+    
+    const reviewDb = client.db('reviewerDB');
+    const reviewCollection = reviewDb.collection('reviewers');
 
     app.post("/products", async (req, res) => {
       const product = req.body;
@@ -77,6 +80,12 @@ async function run() {
       const result = await collection.find().toArray();
       console.log(result);
       res.send(result);
+    });
+
+    app.get("/review", async (req, res) => {
+      const result = await reviewCollection.find().toArray();
+      console.log(result);
+      res.send(result);
     })
 
 
@@ -90,10 +99,6 @@ async function run() {
       console.log(result);
       res.send(result)
     })
-
-
-
-
 
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
